@@ -1,0 +1,35 @@
+{
+  "name": "sls-sdk",
+  "version": "1.0.0",
+  "description": "## Desc",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dk-serverless/aws-labmda-sdk.git"
+  },
+  "keywords": [],
+  "author": "Gangseogu Honey Pistol",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dk-serverless/aws-labmda-sdk/issues"
+  },
+  "homepage": "https://github.com/dk-serverless/aws-labmda-sdk#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "axios": "^1.3.2"
+  }
+}

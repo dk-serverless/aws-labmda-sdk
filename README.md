@@ -1,6 +1,16 @@
-# Labmda use AWS-SDK
+# Lambda use AWS-SDK
 
-## Desc
+## Proceduer
+
+```
+    npm init -y
+    npm i typescript -D
+    tsc --init
+
+    npx eslint --init
+    npm install -D prettier eslint-config-prettier eslint-plugin-prettier
+
+```
 
 ## Reference
 
