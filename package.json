@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "## Desc",
   "main": "dist/index.js",
-  "type": "module",
+  "module": "commonjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && tsc",
     "prepare": "npm run build",
+    "init": "npm run build && node ./dist/playground.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -32,6 +33,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.267.0",
-    "axios": "^1.3.2"
+    "aws-sdk": "^2.1313.0",
+    "axios": "^1.3.2",
+    "huelgo-monad": "^1.0.8"
   }
 }

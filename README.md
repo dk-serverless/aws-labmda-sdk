@@ -22,6 +22,7 @@
 
     npx eslint --init
     npm install -D prettier eslint-config-prettier eslint-plugin-prettier
+    npm i aws-sdk
 ```
 
 ## Reference
