@@ -1,5 +1,5 @@
 import { friendsRepository } from './modules/repositories/friends.repository'
-import { Dictionary } from './modules/utils/base'
+import { AttributeNameType, AttributePropertyType, KeySchemaType } from './modules/utils/types'
 
 const qoa = require('qoa')
 
@@ -14,17 +14,6 @@ enum CliFuncType {
   QUERY_SCAN = 'query_scan',
 }
 
-const runCliMapping: Dictionary<() => Promise<any>> = {
-  [CliFuncType.CREATE]: friendsRepository.createTable,
-  [CliFuncType.DELETE]: friendsRepository.deleteItem,
-  [CliFuncType.UPDATE]: friendsRepository.updateItem,
-  [CliFuncType.GET]: friendsRepository.retrieveItem,
-  [CliFuncType.PUT]: friendsRepository.updateItem,
-  [CliFuncType.BATCH_WRITE]: friendsRepository.batchUpadte,
-  [CliFuncType.BATCH_READ]: friendsRepository.batchRetrieve,
-  [CliFuncType.QUERY_SCAN]: friendsRepository.queryRetrieve,
-}
-
 const runCli = async () =>
   await qoa
     .interactive({
@@ -32,16 +21,7 @@ const runCli = async () =>
       query: 'dynamoDB Friends Cli',
       handle: 'treat',
       symbol: '>',
-      menu: [
-        CliFuncType.CREATE,
-        CliFuncType.DELETE,
-        CliFuncType.UPDATE,
-        CliFuncType.GET,
-        CliFuncType.PUT,
-        CliFuncType.BATCH_WRITE,
-        CliFuncType.BATCH_READ,
-        CliFuncType.QUERY_SCAN,
-      ],
+      menu: [CliFuncType.CREATE, CliFuncType.DELETE, CliFuncType.GET, CliFuncType.PUT],
     })
     .then((res) => res.treat)
 
@@ -61,9 +41,61 @@ const tick = async () =>
     // run
     const subject = await runCli()
 
-    // execute func
-    const result = await runCliMapping[subject]()
-    console.log(result)
+    // execute
+    switch (subject) {
+      case CliFuncType.CREATE:
+        await friendsRepository.createTable({
+          tableName: 'Friends',
+          tableAttribute: [
+            {
+              [AttributeNameType.NAME]: {
+                propertyType: AttributePropertyType.S,
+                keySchemaType: KeySchemaType.HASH,
+              },
+            },
+            {
+              [AttributeNameType.JOB]: {
+                propertyType: AttributePropertyType.S,
+                keySchemaType: KeySchemaType.RANGE,
+              },
+            },
+          ],
+          config: {
+            enableStream: false,
+            readCapacity: 1,
+            writeCapacity: 1,
+          },
+        })
+      case CliFuncType.DELETE:
+        await friendsRepository.deleteItem('Friends', {
+          [AttributeNameType.NAME]: {
+            [AttributePropertyType.S]: 'leedonggyu',
+          },
+          [AttributeNameType.JOB]: {
+            [AttributePropertyType.S]: 'programmer',
+          },
+        })
+
+      case CliFuncType.GET:
+        await friendsRepository.retrieveItem('Friends', {
+          [AttributeNameType.NAME]: {
+            [AttributePropertyType.S]: 'leedonggyu',
+          },
+          [AttributeNameType.JOB]: {
+            [AttributePropertyType.S]: 'programmer',
+          },
+        })
+
+      case CliFuncType.PUT:
+        await friendsRepository.updateItem('Friends', {
+          [AttributeNameType.NAME]: {
+            [AttributePropertyType.S]: 'leedonggyu',
+          },
+          [AttributeNameType.JOB]: {
+            [AttributePropertyType.S]: 'programmer',
+          },
+        })
+    }
 
     // question
     if (!(await tick())) {

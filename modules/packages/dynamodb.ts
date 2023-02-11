@@ -1,5 +1,15 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { Dictionary } from '../utils/base'
+import {
+  AttributeDefinition,
+  AttributeValue,
+  CreateTableCommand,
+  DeleteItemCommand,
+  DynamoDBClient,
+  GetItemCommand,
+  KeySchemaElement,
+  PutItemCommand,
+} from '@aws-sdk/client-dynamodb'
+import { Dictionary, oEntries } from '../utils/base'
+import { loggerAfterReturnValue } from '../utils/logger'
 import { AttributePropertyType, KeySchemaType } from '../utils/types'
 
 let dynamoDBClient: DynamoDBClient
@@ -22,14 +32,71 @@ interface ICreateTable {
   }
 }
 
+type DynamoDbPropertyType = {
+  AttributeDefinitions: AttributeDefinition[]
+  KeySchema: KeySchemaElement[]
+}
+
 export class DynamoManager {
-  async createTable() {}
+  async createTable(params: ICreateTable) {
+    if (!params || !params?.tableAttribute || params?.tableAttribute?.length === 0) return null
 
-  async retrieveItem() {}
+    const tableProperty = params?.tableAttribute.reduce(
+      (acc, cur) => {
+        const [propertyKey, { keySchemaType, propertyType }] = oEntries(cur)[0]
 
-  async updateItem() {}
+        acc['AttributeDefinitions'].push({
+          AttributeName: propertyKey,
+          AttributeType: propertyType,
+        })
 
-  async deleteItem() {}
+        acc['KeySchema'].push({
+          AttributeName: propertyKey,
+          KeyType: keySchemaType,
+        })
+
+        return acc
+      },
+      {
+        AttributeDefinitions: [],
+        KeySchema: [],
+      } as DynamoDbPropertyType
+    )
+
+    const data = await dynamoDBClient.send(
+      new CreateTableCommand({
+        ...tableProperty,
+        ProvisionedThroughput: {
+          ReadCapacityUnits: params?.config?.readCapacity ?? 1,
+          WriteCapacityUnits: params?.config?.writeCapacity ?? 1,
+        },
+        TableName: params.tableName,
+        StreamSpecification: {
+          StreamEnabled: params?.config?.enableStream,
+        },
+      })
+    )
+
+    return loggerAfterReturnValue(console.log, data)
+  }
+
+  async retrieveItem(tableName: string, key: Record<string, AttributeValue>) {
+    return dynamoDBClient
+      .send(new GetItemCommand({ TableName: tableName, Key: key }))
+      .then((res) => loggerAfterReturnValue(console.log, res))
+  }
+
+  async updateItem(tableName: string, item: Record<string, AttributeValue>) {
+    return dynamoDBClient
+      .send(new PutItemCommand({ TableName: tableName, Item: item }))
+      .then((res) => loggerAfterReturnValue(console.log, res))
+  }
+
+  async deleteItem(tableName: string, key: Record<string, AttributeValue>) {
+    return dynamoDBClient
+      .send(new DeleteItemCommand({ TableName: tableName, Key: key }))
+      .then((res) => loggerAfterReturnValue(console.log, res))
+  }
 
   async batchRetrieve() {}
 
