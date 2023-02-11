@@ -1,4 +1,12 @@
-# Lambda use AWS-SDK
+# DynomoDB Practice use
+
+## Execute
+
+```
+    // Command
+    npm install
+    npm run start
+```
 
 ## Folder
 
@@ -12,6 +20,16 @@
         - Services...
         - Models...
 ```
+
+## DynamoDB Command
+
+- [x] DeleteTableCommand (Delete)
+- [x] UpdateItemCommand (Update)
+- [x] GetItemCommand (Read)
+- [x] PutItemCommand (Insert)
+- [x] Batch_Writing
+- [x] Batch_Reading
+- [x] Query_Scanning
 
 ## Proceduer
 

@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "prepare": "npm run build",
-    "init": "npm run build && node ./dist/playground.js",
+    "start": "npm run build && node ./dist/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/dk-serverless/aws-labmda-sdk#readme",
   "devDependencies": {
+    "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "eslint": "^8.33.0",
@@ -35,6 +36,7 @@
     "@aws-sdk/client-dynamodb": "^3.267.0",
     "aws-sdk": "^2.1313.0",
     "axios": "^1.3.2",
-    "huelgo-monad": "^1.0.8"
+    "huelgo-monad": "^1.0.8",
+    "qoa": "^0.2.0"
   }
 }

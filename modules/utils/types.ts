@@ -1,14 +1,20 @@
 // --------------------------------------  DynamoDB Type ----------------------------------
-export const AttributeNameType = {
-  SEASON: 'Season',
-  EPISODE: 'Episode',
-} as const
+export enum AttributeNameType {
+  NAME = 'Name', // 이름
+  PERSONALITY = 'Personality', // 성격
+  JOB = 'Job', // 직업
+  HAS_DATING = 'Has_dating', // 연애 여부
+}
 
-export const AttributePropertyType = {
-  Number: 'N',
-  S: 'String',
-  HASH: 'HASH',
-  RANGE: 'RANGE',
-} as const
+export enum AttributePropertyType {
+  Number = 'N',
+  Boolean = 'B',
+  S = 'S',
+}
+
+export enum KeySchemaType {
+  HASH = 'HASH',
+  RANGE = 'RANGE',
+}
 
 // -----------------------------------------------------------------------------------------
