@@ -31,6 +31,37 @@
 - [x] Batch_Reading
 - [x] Query_Scanning
 
+## PartiQL
+
+```ts
+
+    // insert
+    const insertParams = {
+        Statement : 'insert into product value {'id' : ?, 'productName' : ? }",
+        Parameters : [{ N : 3}, {S : "new phone"}]
+    }
+
+    // read
+    const selectParams = {
+        Statement : "select * from product where id = ?",
+        Parameters: [{N: "3"}]
+    }
+
+    // update
+    const updateParams = {
+        Statement : "update product set productName=? where id =?",
+        Parameters : [{S: "updated phone", {N : "3"}}]
+    }
+
+    // delete
+    const deleteParmas = {
+        Statement : "delete from product where id = ?",
+        Parameters : [{N : "3"}]
+    }
+
+    await dynamoDbClient.send(ExecuteStatementCommand(...))
+```
+
 ## Proceduer
 
 ```
