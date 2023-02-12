@@ -37,7 +37,7 @@
 
     // insert
     const insertParams = {
-        Statement : 'insert into product value {'id' : ?, 'productName' : ? }',
+        Statement : 'insert into product value {'id' : "?", 'productName' : "?" }',
         Parameters : [{ N : 3}, {S : "new phone"}]
     }
 
